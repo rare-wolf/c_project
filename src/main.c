@@ -54,10 +54,19 @@ int main (int argc, char *argv[]) {
 	} else {
 		dbfd = open_db_file(filepath);
 		if (dbfd == STATUS_ERROR) {
-			printf("Unable to opent he database file\n");
+			printf("Unable to open the database file\n");
 			return -1;
 		}
 	}
+
+	// validate the database header 
+	if (validate_db_header(dbfd, &dbhdr) == STATUS_ERROR) {
+		printf("Failed to validate database header\n");
+		return -1;
+	}
+
+	// write data to file
+	output_file(dbfd, dbhdr);
 
 
 	return 0;

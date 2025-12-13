@@ -50,6 +50,7 @@ int main (int argc, char *argv[]) {
 		if (dbfd == STATUS_ERROR) {
 			printf("unable to create database file\n");
 			return -1;
+		create_db_header(dbfd, &dbhdr )
 		}
 	} else {
 		dbfd = open_db_file(filepath);

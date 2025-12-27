@@ -161,10 +161,22 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees){
 // function to add employee data to the database file 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring){
     
+    // defensive code
+    if (NULL == dbhdr) return STATUS_ERROR;
+    if (NULL == employees) return STATUS_ERROR;
+    if (NULL == *employees) return STATUS_ERROR;
+    if (NULL == addstring) return STATUS_ERROR;
+
+
     // store the employee data from user
     char *name = strtok(addstring, ",");
+    if (NULL == name) return STATUS_ERROR;
+
     char *addr = strtok (NULL, ",");
+    if (NULL == addr) return STATUS_ERROR;
+
     char *hours = strtok (NULL, ",");
+    if (NULL == hours) return STATUS_ERROR;
 
     // create a function scope pointer to reallocate the size of dbfile to fit new employee data
     struct employee_t *e = *employees;

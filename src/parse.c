@@ -21,7 +21,7 @@ int create_db_header(struct dbheader_t **headerOut) {
     // to other functions in the program
     struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     // make sure calloc() did not fail :
-    if (header == -1) {
+    if (header == NULL) {
         printf("Malloc() failed to create db header\n");
         return  STATUS_ERROR;
     }
@@ -120,7 +120,11 @@ int read_employees(int fd, struct dbheader_t *header, struct employee_t **employ
     }
 
     // read data from the file 
-    employees = read(fd, &employees , sizeof(struct employee_t) * employeesNum); 
+    if (read (fd, &employees , sizeof(struct employee_t) * employeesNum) != sizeof(struct employee_t) * employeesNum) {
+        perror("read");
+        free(employees);
+        return STATUS_ERROR;
+    };
 
     // store the data read in the pointer
     *employeesOut  = employees;
@@ -129,7 +133,7 @@ int read_employees(int fd, struct dbheader_t *header, struct employee_t **employ
 }
 
 // function to write the data back to disc 
-void output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees){
+int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees){
     if (fd < 0) {
         printf("Got a bad FD from the user\n");
         return;

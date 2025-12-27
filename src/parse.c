@@ -158,4 +158,35 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees){
     return;
 }
 
+// function to add employee data to the database file 
+int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring){
+    
+    // store the employee data from user
+    char *name = strtok(addstring, ",");
+    char *addr = strtok (NULL, ",");
+    char *hours = strtok (NULL, ",");
 
+    // create a function scope pointer to reallocate the size of dbfile to fit new employee data
+    struct employee_t *e = *employees;
+    e = realloc (e, sizeof(struct employee_t)*dbhdr->count+1);
+    // if memory reallocation failed 
+    if (e == NULL) {
+        printf("Memory allocation for new employee failed");
+        return STATUS_ERROR;
+    }
+
+    //modify the employees count in the dbhdr 
+    dbhdr -> count++;
+
+    // ??
+    // copy the input of user (new employee data) to store them in the databse file 
+    strncpy(e[dbhdr->count-1].name, name, sizeof(e[dbhdr->count-1].name)-1);
+    strncpy(e[dbhdr->count-1].address, addr, sizeof(e[dbhdr->count-1].address)-1);
+    e[dbhdr->count].hours = atoi(hours);
+
+    //store the new employee data in the returned pointer
+    *employees = e;
+
+    return STATUS_SUCCESS;
+
+}

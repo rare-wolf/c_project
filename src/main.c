@@ -18,20 +18,28 @@ void print_usage(char *argv[]) {
 int main (int argc, char *argv[]) {
 
 	bool newfile = false;
+	bool list = false;
 	char *filepath = NULL;
+	char *addstring = NULL;
 	int c;
-
 
 	int dbfd = -1;
 	struct dbheader_t *dbhdr = NULL;
+	struct employees_t *employees = NULL;
 
-	while ((c = getopt(argc, argv, "nf:")) != -1){
+	while ((c = getopt(argc, argv, "nf:a:l")) != -1){
 		switch (c) {
 				case 'n':
 						newfile = true;
 						break;
 				case 'f':
 						filepath = optarg;
+						break;
+				case 'a':
+						addstring = optarg;
+						break;
+				case 'l':
+						list = true;
 						break;
 				case '?':
 						printf("Unknown option %c\n", c);
@@ -77,7 +85,7 @@ int main (int argc, char *argv[]) {
 	}
 
 	if (addstring){
-		add_employee(dbhdr, &employees, addstring)
+		add_employee(dbhdr, &employees, addstring);
 	}
 
 	output_file(dbfd, dbhdr, employees);

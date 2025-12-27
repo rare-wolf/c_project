@@ -101,6 +101,7 @@ int validate_db_header (int fd, struct dbheader_t **headerOut) {
     return STATUS_SUCCESS;
 }
 
+// function to read employees from the database file
 int read_employees(int fd, struct dbheader_t *header, struct employee_t **employeesOut) {
     
     // if got a bad fd from user, return an error    
@@ -207,4 +208,10 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 
     return STATUS_SUCCESS;
 
+}
+
+//function to list the employees in the database file 
+void list_employees (struct dbheader_t *dbhdr, struct employee_t *employees) {
+    int i = 0;
+    for (; i< dbhdr->count; i++);
 }

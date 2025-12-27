@@ -10,6 +10,8 @@ void print_usage(char *argv[]) {
 	printf("Usage: %s -n -f <database file>\n", argv[0]);
 	printf("\t -n - create new database file\n");
 	printf("\t -f - (required) path to database file\n");
+	printf("\t -l - list the employees\n");
+	printf("\t -a - add via CSV list of (name,address,hours)\n");
 }
 
 
@@ -18,6 +20,7 @@ int main (int argc, char *argv[]) {
 	bool newfile = false;
 	char *filepath = NULL;
 	int c;
+
 
 	int dbfd = -1;
 	struct dbheader_t *dbhdr = NULL;
@@ -51,7 +54,7 @@ int main (int argc, char *argv[]) {
 			printf("unable to create database file\n");
 			return -1;}
 
-		if (create_db_header(dbfd, &dbhdr ) == STATUS_ERROR ){
+		if (create_db_header(&dbhdr) == STATUS_ERROR ){
 			printf("Failed to create database header\n");
 			return -1;
 		}}
@@ -68,7 +71,16 @@ int main (int argc, char *argv[]) {
 		}
 	}
 
-	output_file(dbfd, dbhdr);
+	if (read_employees(dbfd, dbhdr, &employees) != STATUS_SUCCESS) {
+		printf("Failed to read employees");
+		return 0;
+	}
+
+	if (addstring){
+		add_employee(dbhdr, &employees, addstring)
+	}
+
+	output_file(dbfd, dbhdr, employees);
 	return 0;
 }
 

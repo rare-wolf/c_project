@@ -126,6 +126,12 @@ int read_employees(int fd, struct dbheader_t *header, struct employee_t **employ
         return STATUS_ERROR;
     };
 
+    // unpack hours from (ntetwork = big indean) to (host = little indian)
+    int i = 0;
+    for (; i < employeesNum; i ++){
+        employees[i].hours = ntohl(employees[i].hours);
+    }
+
     // store the data read in the pointer
     *employeesOut  = employees;
 

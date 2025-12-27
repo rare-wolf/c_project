@@ -180,7 +180,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 
     // create a function scope pointer to reallocate the size of dbfile to fit new employee data
     struct employee_t *e = *employees;
-    e = realloc (e, sizeof(struct employee_t)*dbhdr->count+1);
+    e = realloc (e, sizeof (struct employee_t) * (dbhdr->count+1) );
     // if memory reallocation failed 
     if (e == NULL) {
         printf("Memory allocation for new employee failed");
@@ -194,7 +194,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
     // copy the input of user (new employee data) to store them in the databse file 
     strncpy(e[dbhdr->count-1].name, name, sizeof(e[dbhdr->count-1].name)-1);
     strncpy(e[dbhdr->count-1].address, addr, sizeof(e[dbhdr->count-1].address)-1);
-    e[dbhdr->count].hours = atoi(hours);
+    e[dbhdr->count-1].hours = atoi(hours);
 
     //store the new employee data in the returned pointer
     *employees = e;

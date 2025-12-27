@@ -211,7 +211,27 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 }
 
 //function to list the employees in the database file 
-void list_employees (struct dbheader_t *dbhdr, struct employee_t *employees) {
+int list_employees (struct dbheader_t *dbhdr, struct employee_t *employees) {
+
+    if (dbhdr == NULL) {
+        return STATUS_ERROR;
+    }
+
+    if (employees == NULL) {
+        return STATUS_ERROR;
+    }
+
+    if (dbhdr->count == 0) {
+        return STATUS_SUCCESS;
+    }
+    
     int i = 0;
-    for (; i< dbhdr->count; i++);
+    for (; i< dbhdr->count; i++){
+        printf("Employee: %d\n", i);
+        printf("\tName: %s\n", employees[i].name);
+        printf("\tAddress: %s\n", employees[i].address);
+        printf("\tHours: %d\n", employees[i].hours);
+    }
+
+    return STATUS_SUCCESS;
 }
